@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+
+  jenkins:
+    build: ../myjenkins
+    image: docker.mycompany.com/postman-newman-jenkins:2.126
+    container_name: jenkins
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - 9090:8080
+      - 50000:50000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $DOCKER_PATH:/usr/bin/docker
+    # healthcheck:
+    #   test: "curl -f http://localhost:8080 || exit 1"
+    #   start_period: 10s

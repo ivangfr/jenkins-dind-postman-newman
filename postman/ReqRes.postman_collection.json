@@ -1,0 +1,406 @@
+{
+	"info": {
+		"_postman_id": "3bc50e26-1925-4b6d-8d90-e458004c977f",
+		"name": "ReqRes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get List of Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1efd6991-5c9d-42dd-8b09-3b6f3dae89ff",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"var page_schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"page\": { \"type\": \"integer\" },",
+							"        \"per_page\": { \"type\": \"integer\" },",
+							"        \"total\": { \"type\": \"integer\" },",
+							"        \"total_pages\": { \"type\": \"integer\" },",
+							"        \"data\": {",
+							"            \"type\": \"array\",",
+							"            \"items\": {",
+							"                \"type\": \"object\",",
+							"                \"properties\": {",
+							"                    \"id\": { \"type\":\"integer\" },",
+							"                    \"first_name\": { \"type\":\"string\" },",
+							"                    \"last_name\": { \"type\":\"string\" },",
+							"                    \"avatar\": { \"type\":\"string\" }",
+							"                },",
+							"                \"required\": [\"id\", \"first_name\", \"last_name\", \"avatar\"]",
+							"            }",
+							"        }",
+							"    },",
+							"    \"required\": [\"page\", \"per_page\", \"total\", \"total_pages\", \"data\"]",
+							"};",
+							"",
+							"pm.test('Page Schema is valid', function() {",
+							"    var jsonData = pm.response.json();",
+							"    var valid = tv4.validate(jsonData, page_schema);",
+							"    if (valid !== true) {",
+							"        console.log(tv4.error.message);",
+							"    }",
+							"    pm.expect(valid).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Field values\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.page).to.eql(1);",
+							"    pm.expect(jsonData.per_page).to.eql(3);",
+							"    pm.expect(jsonData.total).to.eql(12);",
+							"    pm.expect(jsonData.total_pages).to.eql(4);",
+							"    pm.expect(jsonData.data.length).to.eql(3);",
+							"    pm.expect(jsonData.data[0].id).to.eql(1);",
+							"    pm.expect(jsonData.data[0].first_name).to.eql(\"George\");",
+							"    pm.expect(jsonData.data[0].last_name).to.eql(\"Bluth\");",
+							"    pm.expect(jsonData.data[0].avatar).to.eql(\"https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "70bb653e-cd20-4398-be3b-9177c36ea683",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"var user_schema = {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"        \"data\": {",
+							"            \"type\": \"object\",",
+							"            \"properties\": {",
+							"                \"id\": { \"type\":\"integer\" },",
+							"                \"first_name\": { \"type\":\"string\" },",
+							"                \"last_name\": { \"type\":\"string\" },",
+							"                \"avatar\": { \"type\":\"string\" }",
+							"            },",
+							"            \"required\": [\"id\", \"first_name\", \"last_name\", \"avatar\"]",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.test('User Schema is valid', function() {",
+							"    var jsonData = pm.response.json();",
+							"    var valid = tv4.validate(jsonData, user_schema);",
+							"    if (valid !== true) {",
+							"        console.log(tv4.error.message);",
+							"    }",
+							"    pm.expect(valid).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Field values\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.id).to.have.eql(2);",
+							"    pm.expect(jsonData.data.first_name).to.have.eql(\"Janet\");",
+							"    pm.expect(jsonData.data.last_name).to.have.eql(\"Weaver\");",
+							"    pm.expect(jsonData.data.avatar).to.have.eql(\"https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Nonexistent User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e226c22d-87a2-4b46-a6a7-0017c0f70053",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://reqres.in/api/users/20",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "643b0155-b539-406b-8fcb-c52c6e17a957",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"var user_schema = pm.globals.get(\"user_schema\");",
+							"",
+							"pm.test('User Schema is valid', function() {",
+							"    var jsonData = pm.response.json();",
+							"    var valid = tv4.validate(jsonData, user_schema);",
+							"    if (valid !== true) {",
+							"        console.log(tv4.error.message);",
+							"    }",
+							"    pm.expect(valid).to.be.true;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ivan\",\n    \"job\": \"developer\"\n}"
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9948d99-7aa7-4517-88e4-a7ff972082ea",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"var user_schema = pm.globals.get(\"user_schema\");",
+							"",
+							"pm.test('User Schema is valid', function() {",
+							"    var jsonData = pm.response.json();",
+							"    var valid = tv4.validate(jsonData, user_schema);",
+							"    if (valid !== true) {",
+							"        console.log(tv4.error.message);",
+							"    }",
+							"    pm.expect(valid).to.be.true;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"ivan\",\n    \"job\": \"developer\"\n}"
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "83f4f3b7-c8a1-4f4d-887e-a391065d7595",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1000ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "61b930f5-3b09-48bb-827a-63a8e1e60f5d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "8956219b-e26f-4ff3-a7d6-4e427fa0c9dd",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
