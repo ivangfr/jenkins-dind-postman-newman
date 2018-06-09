@@ -6,7 +6,7 @@ The goal of this project is to implement an **Automation Testing** to test a RES
 
 #### Notes
 
-A new image `docker.mycompany.com/postman-newman-jenkins:2.126` is build from the `Jenkins` base image `jenkins/jenkins:2.126`. _"We need to give the jenkins user sudo privileges in order to be able to run Docker commands inside the container. Alternatively we could have added the jenkins user to the Docker group, which avoids the need to prefix all Docker commands with ‘sudo’, but is non-portable due to the changing gid of the group"_<sup>1</sup>
+A new image `docker.mycompany.com/postman-newman-jenkins:2.126` is build from the `Jenkins` base image `jenkins/jenkins:2.126`. _"We need to give the jenkins user sudo privileges in order to be able to run Docker commands inside the container. Alternatively we could have added the jenkins user to the Docker group, which avoids the need to prefix all Docker commands with ‘sudo’, but is non-portable due to the changing gid of the group"_[1]
 
 ## Start environment
 
