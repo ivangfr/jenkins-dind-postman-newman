@@ -1,9 +1,10 @@
 version: "3.5"
+
 services:
 
   jenkins:
-    build: ../myjenkins
-    image: docker.mycompany.com/postman-newman-jenkins:2.126
+    build: myjenkins
+    image: docker.mycompany.com/postman-newman-jenkins:2.160
     container_name: jenkins
     restart: unless-stopped
     privileged: true
