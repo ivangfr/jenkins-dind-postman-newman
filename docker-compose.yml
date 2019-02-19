@@ -4,13 +4,13 @@ services:
 
   jenkins:
     build: myjenkins
-    image: docker.mycompany.com/postman-newman-jenkins:2.160
+    image: docker.mycompany.com/postman-newman-jenkins:2.165
     container_name: jenkins
     restart: unless-stopped
     privileged: true
     ports:
-      - 9090:8080
-      - 50000:50000
+      - "9090:8080"
+      - "50000:50000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - $DOCKER_PATH:/usr/bin/docker

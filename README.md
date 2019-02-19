@@ -1,24 +1,22 @@
-# postman-newman-jenkins
-
-## Goal
+# `postman-newman-jenkins`
 
 The goal of this project is to implement an **Automation Testing** for a REST API. We will use
 [Postman](https://www.getpostman.com), [Newman](https://github.com/postmanlabs/newman) (that is the command line
 Collection Runner for Postman) and [Jenkins](https://jenkins.io). The REST API to be tested will be
 [`ReqRes`](https://reqres.in), that is a fake online REST API. 
 
-#### Note
+### Note
 
-A new image `docker.mycompany.com/postman-newman-jenkins:2.160` is build from the `Jenkins` base image
-`jenkins/jenkins:2.160`.
+A new image `docker.mycompany.com/postman-newman-jenkins:2.165` is build from the `Jenkins` base image
+`jenkins/jenkins:2.165`.
 
 > _"We need to give the jenkins user sudo privileges in order to be able to run Docker commands inside the container.
-> Alternatively we could have added the jenkins user to the Docker group, which avoids the need to prefix all Docker
-> commands with ‘sudo’, but is non-portable due to the changing gid of the group"_ [1]
+Alternatively we could have added the jenkins user to the Docker group, which avoids the need to prefix all Docker
+commands with ‘sudo’, but is non-portable due to the changing gid of the group"_ [1]
 
-## Start environment
+# Start environment
 
-#### Test Postman Collection in Host Machine
+## Test Postman Collection in Host Machine
 
 - Open a terminal and go to `/postman-newman-jenkins` root folder
 
@@ -29,7 +27,7 @@ docker run -t --rm --name newman -v $PWD/postman:/etc/newman \
 postman/newman_ubuntu1404:4.3.1 run ReqRes.postman_collection.json -g ReqRes.postman_globals.json
 ```
 
-#### Docker Compose
+## Docker Compose
 
 - Export to `DOCKER_PATH` environment variable the docker path in host machine
 ```
@@ -52,7 +50,7 @@ docker-compose up -d
 docker-compose ps
 ```
 
-#### Jenkins
+## Jenkins
 
 - Get the Jenkins installation password
 ```
@@ -110,9 +108,9 @@ run "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/pos
 ![rest-api-jenkins-project](images/rest-api-jenkins-project.png)
 
 - In order to run the project, click on `Build Now` menu item on the left.
-> The test cases are a little bit strict. They require that the response time must be below 1000 ms. So, depending
-> on how fast `ReqRes` online REST API replies to you request, maybe some test cases will fail and, consequently, the
-> build will fail. 
+> The test cases are a little bit strict. They require that the response time must be below 1000 ms. So, depending on
+how fast `ReqRes` online REST API replies to you request, maybe some test cases will fail and, consequently, the build
+will fail. 
 
 - To see the execution results, click on the red or blue balls that appears inside `Build History` (section on the left)
 everytime you build the Jenkins project. You should get an output like
@@ -188,6 +186,6 @@ Root Delete User
 Finished: SUCCESS
 ```
 
-#### Sources
+# References
 
 [1] Running Docker in Jenkins (in Docker): https://container-solutions.com/running-docker-in-jenkins-in-docker
