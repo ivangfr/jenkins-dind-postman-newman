@@ -1,58 +1,54 @@
 # `postman-newman-jenkins`
 
 The goal of this project is to implement an **Automation Testing** for a REST API. We will use
-[Postman](https://www.getpostman.com), [Newman](https://github.com/postmanlabs/newman) (that is the command line
-Collection Runner for Postman) and [Jenkins](https://jenkins.io). The REST API to be tested will be
+[`Postman`](https://www.getpostman.com), [`Newman`](https://github.com/postmanlabs/newman) (that is the command line
+Collection Runner for Postman) and [`Jenkins`](https://jenkins.io). The REST API to be tested will be
 [`ReqRes`](https://reqres.in), that is a fake online REST API. 
 
 ### Note
 
-A new image `docker.mycompany.com/postman-newman-jenkins:2.165` is build from the `Jenkins` base image
-`jenkins/jenkins:2.165`.
+A new image `docker.mycompany.com/postman-newman-jenkins:2.205` is build from the `Jenkins` base image
+`jenkins/jenkins:2.205`.
 
 > _"We need to give the jenkins user sudo privileges in order to be able to run Docker commands inside the container.
 Alternatively we could have added the jenkins user to the Docker group, which avoids the need to prefix all Docker
 commands with ‘sudo’, but is non-portable due to the changing gid of the group"_ [1]
 
-# Start environment
+## Start environment
 
-## Test Postman Collection in Host Machine
+### Test Postman Collection in Host Machine
 
-- Open a terminal and go to `/postman-newman-jenkins` root folder
-
-- In order to run the `Postman` collection present in `\postman` folder without `Jenkins`, execute the following
-command. It will start `Newman` docker container
+Open a terminal and, inside `postman-newman-jenkins` root folder, execute the following command. I will run `Newman`
+docker container using the `Postman` collection present in `postman` folder.
 ```
 docker run -t --rm --name newman -v $PWD/postman:/etc/newman \
-postman/newman_ubuntu1404:4.3.1 run ReqRes.postman_collection.json -g ReqRes.postman_globals.json
+postman/newman_ubuntu1404:4.5.6 run ReqRes.postman_collection.json -g ReqRes.postman_globals.json
 ```
 
-## Docker Compose
+### Docker Compose
 
-- Export to `DOCKER_PATH` environment variable the docker path in host machine
+Export to `DOCKER_PATH` environment variable the docker path in host machine
 ```
 export DOCKER_PATH=$(which docker)
 ```
 
-- Inside `/postman-newman-jenkins` root folder and run
+Inside `postman-newman-jenkins` root folder and run
 ```
 docker-compose up -d
 ```
-> To stop and remove containers, networks and volumes type:
+> To stop and remove containers, networks and volumes type
 > ```
 > docker-compose down -v
 > ```
 
-- Wait a little bit so that `jenkins` container is `Up`.
-
-- To check their status run
+Wait a little bit so that `jenkins` container is `Up`. To check it run
 ```
 docker-compose ps
 ```
 
-## Jenkins
+### Jenkins
 
-- Get the Jenkins installation password
+- Get the `Jenkins` installation password
 ```
 docker logs jenkins
 ```
@@ -74,7 +70,7 @@ This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
 *************************************************************
 ```
 
-- Access Jenkins: http://localhost:9090
+- Access `Jenkins` at http://localhost:9090
 
 - Inform the installation password.
 
@@ -86,7 +82,7 @@ This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
 
 - On the main Jenkins interface, click on `New item` on the menu.
 
-- Enter a name `rest-api-automation-testing`
+- Enter a name, for instance, `rest-api-automation-testing`
 
 - Select `Freestyle project` and click on `OK` button. 
 
@@ -118,7 +114,7 @@ everytime you build the Jenkins project. You should get an output like
 Started by user admin
 Building in workspace /var/jenkins_home/workspace/rest-api-automation-testing
 [rest-api-automation-testing] $ /bin/sh -xe /tmp/jenkins3148741983294114742.sh
-+ sudo docker run --rm postman/newman_ubuntu1404:4.3.1 run https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json -g https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
++ sudo docker run --rm postman/newman_ubuntu1404:4.5.6 run https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json -g https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
 newman
 
 ReqRes
@@ -186,6 +182,6 @@ Root Delete User
 Finished: SUCCESS
 ```
 
-# References
+## References
 
 [1] Running Docker in Jenkins (in Docker): https://container-solutions.com/running-docker-in-jenkins-in-docker

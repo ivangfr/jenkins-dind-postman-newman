@@ -12,7 +12,6 @@
 					"listen": "test",
 					"script": {
 						"id": "1efd6991-5c9d-42dd-8b09-3b6f3dae89ff",
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -62,23 +61,23 @@
 							"pm.test(\"Field values\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.page).to.eql(1);",
-							"    pm.expect(jsonData.per_page).to.eql(3);",
+							"    pm.expect(jsonData.per_page).to.eql(6);",
 							"    pm.expect(jsonData.total).to.eql(12);",
-							"    pm.expect(jsonData.total_pages).to.eql(4);",
-							"    pm.expect(jsonData.data.length).to.eql(3);",
+							"    pm.expect(jsonData.total_pages).to.eql(2);",
+							"    pm.expect(jsonData.data.length).to.eql(6);",
 							"    pm.expect(jsonData.data[0].id).to.eql(1);",
 							"    pm.expect(jsonData.data[0].first_name).to.eql(\"George\");",
 							"    pm.expect(jsonData.data[0].last_name).to.eql(\"Bluth\");",
 							"    pm.expect(jsonData.data[0].avatar).to.eql(\"https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg\");",
 							"});"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
 				"url": {
 					"raw": "https://reqres.in/api/users",
 					"protocol": "https",
@@ -154,7 +153,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
 				"url": {
 					"raw": "https://reqres.in/api/users/2",
 					"protocol": "https",
@@ -198,7 +196,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
 				"url": {
 					"raw": "https://reqres.in/api/users/20",
 					"protocol": "https",
@@ -363,7 +360,10 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
 				"url": {
 					"raw": "https://reqres.in/api/users/2",
 					"protocol": "https",

@@ -1,15 +1,15 @@
 {
-  "id": "146e52f0-fd32-4814-8e58-8a3c0f4d5eb7",
-  "values": [
-    {
-      "key": "user_schema",
-      "value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": { \"type\":\"string\" },\n        \"job\": { \"type\":\"string\" },\n        \"id\": { \"type\":\"string\" },\n        \"createdAt\": { \"type\":\"string\" }\n    },\n    \"required\": [\"name\", \"job\", \"id\", \"createdAt\"]\n}",
-      "enabled": true,
-      "type": "text"
-    }
-  ],
-  "name": "My Workspace Globals",
-  "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-06-08T13:50:42.631Z",
-  "_postman_exported_using": "Postman/6.1.3"
+	"id": "146e52f0-fd32-4814-8e58-8a3c0f4d5eb7",
+	"values": [
+		{
+			"key": "user_schema",
+			"value": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": { \"type\":\"string\" },\n        \"job\": { \"type\":\"string\" },\n        \"id\": { \"type\":\"string\" },\n        \"createdAt\": { \"type\":\"string\" }\n    },\n    \"required\": [\"name\", \"job\", \"id\", \"createdAt\"]\n}",
+			"type": "text",
+			"enabled": true
+		}
+	],
+	"name": "My Workspace Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2019-11-21T11:05:48.217Z",
+	"_postman_exported_using": "Postman/7.11.0"
 }
