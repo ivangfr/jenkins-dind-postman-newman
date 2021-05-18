@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3bc50e26-1925-4b6d-8d90-e458004c977f",
+		"_postman_id": "44a9bf17-0dd3-4cea-b53f-1d628192cfc0",
 		"name": "ReqRes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "1efd6991-5c9d-42dd-8b09-3b6f3dae89ff",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -68,7 +67,7 @@
 							"    pm.expect(jsonData.data[0].id).to.eql(1);",
 							"    pm.expect(jsonData.data[0].first_name).to.eql(\"George\");",
 							"    pm.expect(jsonData.data[0].last_name).to.eql(\"Bluth\");",
-							"    pm.expect(jsonData.data[0].avatar).to.eql(\"https://s3.amazonaws.com/uifaces/faces/twitter/calebogden/128.jpg\");",
+							"    pm.expect(jsonData.data[0].avatar).to.eql(\"https://reqres.in/img/faces/1-image.jpg\");",
 							"});"
 						],
 						"type": "text/javascript"
@@ -99,8 +98,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "70bb653e-cd20-4398-be3b-9177c36ea683",
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -144,9 +141,10 @@
 							"    pm.expect(jsonData.data.id).to.have.eql(2);",
 							"    pm.expect(jsonData.data.first_name).to.have.eql(\"Janet\");",
 							"    pm.expect(jsonData.data.last_name).to.have.eql(\"Weaver\");",
-							"    pm.expect(jsonData.data.avatar).to.have.eql(\"https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg\");",
+							"    pm.expect(jsonData.data.avatar).to.have.eql(\"https://reqres.in/img/faces/2-image.jpg\");",
 							"});"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -175,7 +173,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e226c22d-87a2-4b46-a6a7-0017c0f70053",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 404\", function () {",
@@ -218,7 +215,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "643b0155-b539-406b-8fcb-c52c6e17a957",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 201\", function () {",
@@ -280,7 +276,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "a9948d99-7aa7-4517-88e4-a7ff972082ea",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
@@ -343,7 +338,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "83f4f3b7-c8a1-4f4d-887e-a391065d7595",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 204\", function () {",
@@ -385,7 +379,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "61b930f5-3b09-48bb-827a-63a8e1e60f5d",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -395,7 +388,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "8956219b-e26f-4ff3-a7d6-4e427fa0c9dd",
 				"type": "text/javascript",
 				"exec": [
 					""
