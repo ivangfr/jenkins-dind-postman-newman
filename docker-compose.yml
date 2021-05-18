@@ -2,18 +2,39 @@ version: "3.8"
 
 services:
 
-  jenkins:
-    build: myjenkins
-    image: docker.mycompany.com/postman-newman-jenkins:2.244-slim
-    container_name: jenkins
-    restart: unless-stopped
+  jenkins-docker:
+    image: docker:dind
+    container_name: jenkins-docker
+    hostname: docker
     privileged: true
     ports:
-      - "9090:8080"
-      - "50000:50000"
+      - "2376:2376"
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    command: --storage-driver=overlay2
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - $DOCKER_PATH:/usr/bin/docker
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+
+  jenkins:
+    build: myjenkins
+    image: jenkins-blueocean:2.277.4-lts-jdk11
+    container_name: jenkins
+    privileged: true
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro
     healthcheck:
       test: "curl -f http://localhost:8080/login || exit 1"
       start_period: 10s
+
+volumes:
+  jenkins-data:
+  jenkins-docker-certs:
