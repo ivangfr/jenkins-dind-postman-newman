@@ -1,28 +1,32 @@
-# postman-newman-jenkins
+# jenkins-dind-postman-newman
 
-The goal of this project is to implement an **Automation Testing** for a REST API. We will use [`Postman`](https://www.getpostman.com), [`Newman`](https://github.com/postmanlabs/newman) (that is the command line Collection Runner for Postman) and [`Jenkins`](https://jenkins.io). The REST API to be tested will be [`ReqRes`](https://reqres.in), that is a fake online REST API. 
+The goal of this project is to implement an **Automation Testing** for a fake online REST API called [`ReqRes`](https://reqres.in). We will use:
+- [`Jenkins`](https://jenkins.io), a self-contained, open source automation server which can be used to automate all sorts of tasks related to building, testing, and delivering or deploying software;
+- [`Docker-in-Docker (dind)`](https://hub.docker.com/_/docker) to execute `Docker` commands inside `Jenkins`;
+- [`Postman API Client`](https://www.postman.com/product/api-client/), for testing API calls;
+- [`Newman`](https://github.com/postmanlabs/newman), a command-line collection runner for `Postman`.
 
 ## Prerequisites
 
-- [`Postman`](https://www.postman.com/downloads/)
+- [`Postman API Client`](https://www.postman.com/product/api-client/)
 - [`Docker`](https://www.docker.com/)
 - [`Docker-Compose`](https://docs.docker.com/compose/install/)
 
 ## Test Postman Collection in Host Machine
 
-- Open a terminal window and make sure you are inside `postman-newman-jenkins` root folder
+- Open a terminal window and make sure you are inside `jenkins-dind-postman-newman` root folder
 
 - Execute the following command. I will run `Newman` docker container using the `Postman` collection present in `postman` folder.
   ```
   docker run -t --rm --name newman -v $PWD/postman:/etc/newman \
-    postman/newman:5.2.3-alpine run ReqRes.postman_collection.json -g ReqRes.postman_globals.json
+    postman/newman:5.2.3-alpine run ReqRes.postman_collection.json --globals ReqRes.postman_globals.json
   ```
   
 - In `postman` folder, there are two JSON files that configure some test cases and environment variables used to run them. You can edit them by using `Postman`. 
 
-## Running Jenkins using Docker-In-Docker
+## Running Jenkins using Docker-in-Docker
 
-- In a terminal window, make sure you are inside `postman-newman-jenkins` root folder
+- In a terminal window, make sure you are inside `jenkins-dind-postman-newman` root folder
 
 - Run the command below
   ```
@@ -72,7 +76,7 @@ The goal of this project is to implement an **Automation Testing** for a REST AP
 
 - Keep the `Jenkins URL` as it is, i.e, `http://localhost:8080/`, and click `Save and Finish` button
 
-- `Jenkins` is ready! Click `Start using Jenkins`
+- **Jenkins is ready!** Click `Start using Jenkins`
 
 ## Configuring Automation Project in Jenkins 
 
@@ -92,7 +96,7 @@ The goal of this project is to implement an **Automation Testing** for a REST AP
   ```
   docker run --rm postman/newman:5.2.3-alpine \
   run "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json" \
-  -g "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json" \
+  --globals "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json" \
   --disable-unicode --color off
   ```
 
@@ -112,7 +116,7 @@ The goal of this project is to implement an **Automation Testing** for a REST AP
   Running as SYSTEM
   Building in workspace /var/jenkins_home/workspace/rest-api-automation-testing
   [rest-api-automation-testing] $ /bin/sh -xe /tmp/jenkins1303008713203054507.sh
-  + docker run --rm postman/newman:5.2.3-alpine run https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json -g https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
+  + docker run --rm postman/newman:5.2.3-alpine run https://raw.githubusercontent.com/ivangfr/jenkins-dind-postman-newman/master/postman/ReqRes.postman_collection.json --globals https://raw.githubusercontent.com/ivangfr/jenkins-dind-postman-newman/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
     newman
   
   ReqRes
@@ -182,12 +186,13 @@ The goal of this project is to implement an **Automation Testing** for a REST AP
 
 ## Shutdown
 
-- In a terminal window, make sure you are inside `postman-newman-jenkins` root folder
+- In a terminal window, make sure you are inside `jenkins-dind-postman-newman` root folder
 
 - To stop and remove docker-compose containers, network and volumes run
   ```
   docker-compose down -v
   ```
+
 ## How to keep this project updated
 
 Check https://www.jenkins.io/doc/book/installing/docker/
