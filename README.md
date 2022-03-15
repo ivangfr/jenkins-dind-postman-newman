@@ -14,25 +14,25 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 ## Test Postman Collection in Host Machine
 
-- Open a terminal window and make sure you are inside `jenkins-dind-postman-newman` root folder
+- Open a terminal and make sure you are inside `jenkins-dind-postman-newman` root folder
 
 - Execute the following command. I will run `Newman` docker container using the `Postman` collection present in `postman` folder.
   ```
   docker run -t --rm --name newman -v $PWD/postman:/etc/newman \
-    postman/newman:5.2.3-alpine run ReqRes.postman_collection.json --globals ReqRes.postman_globals.json
+    postman/newman:5.3.1-alpine run ReqRes.postman_collection.json --globals ReqRes.postman_globals.json
   ```
   
 - In `postman` folder, there are two JSON files that configure some test cases and environment variables used to run them. You can edit them by using `Postman`. 
 
 ## Running Jenkins using Docker-in-Docker
 
-- In a terminal window, make sure you are inside `jenkins-dind-postman-newman` root folder
+- In a terminal, make sure you are inside `jenkins-dind-postman-newman` root folder
 
 - Run the command below
   ```
   docker-compose up -d
   ```
-  > **Note 1:** A new image called `jenkins-blueocean:2.277.4-lts-jdk11` is build from the `Jenkins` base image `jenkins/jenkins:2.277.4-lts-jdk11`. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`
+  > **Note 1:** A new image called `jenkins-blueocean:2.339-jdk11` is build from the `Jenkins` base image `jenkins/jenkins:2.277.4-lts-jdk11`. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`
   
   > **Note 2:** If you prefer run `jenkins-docker` and `jenkins` Docker containers using `docker run` command instead, follow the steps described at [jenkins.io website](https://www.jenkins.io/doc/book/installing/docker/)
 
@@ -43,7 +43,7 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 ## Configuring Jenkins
 
-- In a terminal window, get the `Jenkins` installation password by running the following command
+- In a terminal, get the `Jenkins` installation password by running the following command
   ```
   docker logs jenkins
   ```
@@ -84,23 +84,23 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 - Provide the username and password that you created while [configuring Jenkins](#configuring-jenkins) 
 
-- On the main `Jenkins` interface, click `New item` on the menu
+- In the main `Jenkins` interface, click `New item` menu on the left
 
 - Enter a name, for instance, `rest-api-automation-testing`
 
-- Select `Freestyle project` and click `OK`
+- Select `Freestyle project` and click `OK` button
 
-- On the next screen, go to `Build` section. Click `Add build step` and select `Execute shell`
+- In the next screen, go to `Build` section. Click `Add build step` and select `Execute shell`
 
-- Set to the `Command` field the command below
+- Set the command below to the `Command` field
   ```
-  docker run --rm postman/newman:5.2.3-alpine \
+  docker run --rm postman/newman:5.3.1-alpine \
   run "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json" \
   --globals "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json" \
   --disable-unicode --color off
   ```
 
-- Click `Save` at the bottom of the page
+- Click `Save` button
 
 - Your Jenkins project is created. You should see something like
 
@@ -116,7 +116,7 @@ The goal of this project is to implement an **Automation Testing** for a fake on
   Running as SYSTEM
   Building in workspace /var/jenkins_home/workspace/rest-api-automation-testing
   [rest-api-automation-testing] $ /bin/sh -xe /tmp/jenkins1303008713203054507.sh
-  + docker run --rm postman/newman:5.2.3-alpine run https://raw.githubusercontent.com/ivangfr/jenkins-dind-postman-newman/master/postman/ReqRes.postman_collection.json --globals https://raw.githubusercontent.com/ivangfr/jenkins-dind-postman-newman/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
+  + docker run --rm postman/newman:5.3.1-alpine run https://raw.githubusercontent.com/ivangfr/jenkins-dind-postman-newman/master/postman/ReqRes.postman_collection.json --globals https://raw.githubusercontent.com/ivangfr/jenkins-dind-postman-newman/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
     newman
   
   ReqRes
@@ -186,12 +186,19 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 ## Shutdown
 
-- In a terminal window, make sure you are inside `jenkins-dind-postman-newman` root folder
+- In a terminal, make sure you are inside `jenkins-dind-postman-newman` root folder
 
 - To stop and remove docker-compose containers, network and volumes run
   ```
   docker-compose down -v
   ```
+
+## Cleanup
+
+To remove the Docker image create by this project, go to a terminal and, `jenkins-dind-postman-newman` root folder, run the following script
+```
+./remove-docker-images.sh
+```
 
 ## How to keep this project updated
 
