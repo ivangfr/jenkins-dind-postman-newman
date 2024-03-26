@@ -6,11 +6,14 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 - [`Postman API Client`](https://www.postman.com/product/api-client/), for testing API calls;
 - [`Newman`](https://github.com/postmanlabs/newman), a command-line collection runner for `Postman`.
 
+## Proof-of-Concepts & Articles
+
+On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-Concepts (PoCs) and articles. You can easily search for the technology you are interested in by using the filter. Who knows, perhaps I have already implemented a PoC or written an article about what you are looking for.
+
 ## Prerequisites
 
 - [`Postman API Client`](https://www.postman.com/product/api-client/)
 - [`Docker`](https://www.docker.com/)
-- [`Docker-Compose`](https://docs.docker.com/compose/install/)
 
 ## Test Postman Collection in Host Machine
 
@@ -19,10 +22,76 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 - Execute the following command. I will run `Newman` docker container using the `Postman` collection present in `postman` folder.
   ```
   docker run -t --rm --name newman -v $PWD/postman:/etc/newman \
-    postman/newman:5.3.1-alpine run ReqRes.postman_collection.json --globals ReqRes.postman_globals.json
+    postman/newman:6.1.1-alpine run ReqRes.postman_collection.json --globals ReqRes.postman_globals.json
   ```
   
-- In `postman` folder, there are two JSON files that configure some test cases and environment variables used to run them. You can edit them by using `Postman`. 
+  In `postman` folder, there are two JSON files that configure some test cases and environment variables used to run them. You can edit them by using `Postman`.
+
+  You should get as response:
+  ```
+  ReqRes
+  
+  → Get List of Users
+    GET https://reqres.in/api/users [200 OK, 1.92kB, 302ms]
+    ✓  Status code is 200
+    ✓  Content-Type is present
+    ✓  Response time is less than 1000ms
+    ✓  Page Schema is valid
+    ✓  Field values
+  
+  → Get Single User
+    GET https://reqres.in/api/users/2 [200 OK, 1.22kB, 60ms]
+    ✓  Status code is 200
+    ✓  Content-Type is present
+    ✓  Response time is less than 1000ms
+    ✓  User Schema is valid
+    ✓  Field values
+  
+  → Get Nonexistent User
+    GET https://reqres.in/api/users/20 [404 Not Found, 898B, 120ms]
+    ✓  Status code is 404
+    ✓  Content-Type is present
+    ✓  Response time is less than 1000ms
+  
+  → Post User
+    POST https://reqres.in/api/users [201 Created, 929B, 117ms]
+    ✓  Status code is 201
+    ✓  Content-Type is present
+    ✓  Response time is less than 1000ms
+    ✓  User Schema is valid
+  
+  → Put User
+    PUT https://reqres.in/api/users/2 [200 OK, 970B, 117ms]
+    ✓  Status code is 200
+    ✓  Content-Type is present
+    ✓  Response time is less than 1000ms
+    ✓  User Schema is valid
+  
+  → Delete User
+    DELETE https://reqres.in/api/users/2 [204 No Content, 804B, 102ms]
+    ✓  Status code is 204
+    ✓  Response time is less than 1000ms
+  
+  ┌─────────────────────────┬────────────────────┬───────────────────┐
+  │                         │           executed │            failed │
+  ├─────────────────────────┼────────────────────┼───────────────────┤
+  │              iterations │                  1 │                 0 │
+  ├─────────────────────────┼────────────────────┼───────────────────┤
+  │                requests │                  6 │                 0 │
+  ├─────────────────────────┼────────────────────┼───────────────────┤
+  │            test-scripts │                 12 │                 0 │
+  ├─────────────────────────┼────────────────────┼───────────────────┤
+  │      prerequest-scripts │                  6 │                 0 │
+  ├─────────────────────────┼────────────────────┼───────────────────┤
+  │              assertions │                 23 │                 0 │
+  ├─────────────────────────┴────────────────────┴───────────────────┤
+  │ total run duration: 1149ms                                       │
+  ├──────────────────────────────────────────────────────────────────┤
+  │ total data received: 1.43kB (approx)                             │
+  ├──────────────────────────────────────────────────────────────────┤
+  │ average response time: 136ms [min: 60ms, max: 302ms, s.d.: 76ms] │
+  └──────────────────────────────────────────────────────────────────┘
+  ```
 
 ## Running Jenkins using Docker-in-Docker
 
@@ -30,15 +99,15 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 - Run the command below
   ```
-  docker-compose up -d
+  docker compose up -d
   ```
-  > **Note 1:** A new image called `jenkins-blueocean:2.345-jdk11` is build from the `Jenkins` base image `jenkins/jenkins:2.345-jdk11`. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`
+  > **Note 1:** A new image called `jenkins-blueocean:2.440.2-jdk17` is build from the `Jenkins` base image `jenkins/jenkins:2.440.2-jdk17`. To rebuild this image you must use `docker compose build` or `docker compose up --build`
   
-  > **Note 2:** If you prefer run `jenkins-docker` and `jenkins` Docker containers using `docker run` command instead, follow the steps described at [jenkins.io website](https://www.jenkins.io/doc/book/installing/docker/)
+  > **Note 2:** If you prefer to run `jenkins-docker` and `jenkins` Docker containers using `docker run` command instead, follow the steps described at [jenkins.io website](https://www.jenkins.io/doc/book/installing/docker/)
 
 - Wait a bit so that `jenkins` container is `Up (healthy)`. To check it run
   ```
-  docker-compose ps
+  docker compose ps
   ```
 
 ## Configuring Jenkins
@@ -48,7 +117,7 @@ The goal of this project is to implement an **Automation Testing** for a fake on
   docker logs jenkins
   ```
 
-  You should see something similar to
+  You should see something similar to the sample below, where the password is informed
   ```
   *************************************************************
   *************************************************************
@@ -72,17 +141,13 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 - Select `Install suggested plugins` (default installation) and wait for it to complete
 
-- In the screen `Create First Admin User`, create an account for you informing a username, password, etc. Then, click `Save and Continue` button
+- On the `Create First Admin User` screen, create an account informing username, password, etc. Then, click `Save and Continue` button
 
-- Keep the `Jenkins URL` as it is, i.e, `http://localhost:8080/`, and click `Save and Finish` button
+- Keep the `Jenkins URL` as it's (it should be `http://localhost:8080/`), and click `Save and Finish` button
 
 - **Jenkins is ready!** Click `Start using Jenkins`
 
 ## Configuring Automation Project in Jenkins 
-
-- If you are not in `Jenkins` website, access it at http://localhost:8080
-
-- Provide the username and password that you created while [configuring Jenkins](#configuring-jenkins) 
 
 - In the main `Jenkins` interface, click `New item` menu on the left
 
@@ -90,11 +155,11 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 - Select `Freestyle project` and click `OK` button
 
-- In the next screen, go to `Build` section. Click `Add build step` and select `Execute shell`
+- In the next screen, go to `Build Steps` section. Click `Add build step` and select `Execute shell`
 
-- Set the command below to the `Command` field
+- Set the content below to the `Command` field
   ```
-  docker run --rm postman/newman:5.3.1-alpine \
+  docker run --rm postman/newman:6.1.1-alpine \
   run "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json" \
   --globals "https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json" \
   --disable-unicode --color off
@@ -104,92 +169,15 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 - Your Jenkins project is created. You should see something like
 
-  ![rest-api-jenkins-project](images/rest-api-jenkins-project.png)
+  ![rest-api-jenkins-project](documentation/rest-api-jenkins-project.png)
 
 - In order to run the project, click `Build Now` menu item on the left
   
   > **Note:** The test cases are a bit strict. They require that the response time must be below `1000` ms. So, depending on how fast `ReqRes` online REST API replies to you request, maybe some test cases will fail and, consequently, the build will fail.
 
-- To see the execution results, click the red or green icons that appears inside `Build History` (section on the left) everytime you build the `Jenkins` project. You should get an output like
-  ```
-  Started by user Admin
-  Running as SYSTEM
-  Building in workspace /var/jenkins_home/workspace/rest-api-automation-testing
-  [rest-api-automation-testing] $ /bin/sh -xe /tmp/jenkins6209473670817509056.sh
-  + docker run --rm postman/newman:5.3.1-alpine run https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_collection.json --globals https://raw.githubusercontent.com/ivangfr/postman-newman-jenkins/master/postman/ReqRes.postman_globals.json --disable-unicode --color off
-  Unable to find image 'postman/newman:5.3.1-alpine' locally
-  5.3.1-alpine: Pulling from postman/newman
-  fa637f525e1a: Pulling fs layer
-  fa637f525e1a: Download complete
-  fa637f525e1a: Pull complete
-  Digest: sha256:8c6463863869941ab58a27655a6810fcdc01943cef82cfbda73bd6459e1751fa
-  Status: Downloaded newer image for postman/newman:5.3.1-alpine
-  newman
+- To see the execution results, click the red or green icons that appears inside `Build History` (section on the left) everytime you build the `Jenkins` project.
   
-  ReqRes
-  
-  Root Get List of Users
-    GET https://reqres.in/api/users [200 OK, 1.89kB, 296ms]
-    Pass  Status code is 200
-    Pass  Content-Type is present
-    Pass  Response time is less than 1000ms
-    Pass  Page Schema is valid
-    Pass  Field values
-  
-  Root Get Single User
-    GET https://reqres.in/api/users/2 [200 OK, 1.18kB, 65ms]
-    Pass  Status code is 200
-    Pass  Content-Type is present
-    Pass  Response time is less than 1000ms
-    Pass  User Schema is valid
-    Pass  Field values
-  
-  Root Get Nonexistent User
-    GET https://reqres.in/api/users/20 [404 Not Found, 865B, 141ms]
-    Pass  Status code is 404
-    Pass  Content-Type is present
-    Pass  Response time is less than 1000ms
-  
-  Root Post User
-    POST https://reqres.in/api/users [201 Created, 897B, 134ms]
-    Pass  Status code is 201
-    Pass  Content-Type is present
-    Pass  Response time is less than 1000ms
-    Pass  User Schema is valid
-  
-  Root Put User
-    PUT https://reqres.in/api/users/2 [200 OK, 930B, 151ms]
-    Pass  Status code is 200
-    Pass  Content-Type is present
-    Pass  Response time is less than 1000ms
-    Pass  User Schema is valid
-  
-  Root Delete User
-    DELETE https://reqres.in/api/users/2 [204 No Content, 762B, 126ms]
-    Pass  Status code is 204
-    Pass  Response time is less than 1000ms
-  
-  --------------------------------------------------------------------
-  |                         |           executed |            failed |
-  --------------------------+--------------------+--------------------
-  |              iterations |                  1 |                 0 |
-  --------------------------+--------------------+--------------------
-  |                requests |                  6 |                 0 |
-  --------------------------+--------------------+--------------------
-  |            test-scripts |                 12 |                 0 |
-  --------------------------+--------------------+--------------------
-  |      prerequest-scripts |                  6 |                 0 |
-  --------------------------+--------------------+--------------------
-  |              assertions |                 23 |                 0 |
-  --------------------------------------------------------------------
-  | total run duration: 1316ms                                       |
-  --------------------------------------------------------------------
-  | total data received: 1.43kB (approx)                             |
-  --------------------------------------------------------------------
-  | average response time: 152ms [min: 65ms, max: 296ms, s.d.: 70ms] |
-  --------------------------------------------------------------------
-  Finished: SUCCESS
-  ```
+  ![rest-api-jenkins-result](documentation/rest-api-jenkins-result.png)
 
 ## Shutdown
 
@@ -197,7 +185,7 @@ The goal of this project is to implement an **Automation Testing** for a fake on
 
 - To stop and remove docker-compose containers, network and volumes run
   ```
-  docker-compose down -v
+  docker compose down -v
   ```
 
 ## Cleanup
